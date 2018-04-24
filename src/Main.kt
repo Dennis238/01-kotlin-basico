@@ -10,12 +10,12 @@ fun main(args: Array<String>) {
     println(sumarDosNumeros(1, 2)) //no hace falta poner los nombres de las
     //variables, solo los números
     var nombre: String? = "Dennis"
-    var edad: Int = 28
-    val edadActual = 28 //val no permite ser modificado (similar a let)
+    var edad: Int = 21
+    val edadActual = 21//val no permite ser modificado (similar a let)
     var casado = false
     casado = true //duck typing, al omitir el tipo de variable
     //edadActual = 29
-    nombre = null
+    //nombre = null
 
     when (casado) {
         true -> {
@@ -37,7 +37,11 @@ fun main(args: Array<String>) {
     println("SuperHeroe:${superHeroe}")
 
     var dennis = Persona(Integer(28), "Dennis")
-    println(adrian.toString())
+    println(dennis.toString())
+    var dennis2 = Persona2(Integer(28), "Dennis")
+    println(dennis2.toString())
+    var dennis3 = Persona3(Integer(28), "Dennis")
+    println(dennis3.toString())
 
     }
     class Persona {
@@ -45,40 +49,38 @@ fun main(args: Array<String>) {
         var nNombre: String
 
         //constructor(edad:Any)
-        constructor(edad: Int, nombre: String) {
+        constructor(edad: Integer, nombre: String) {
+            edadActual = edad
             nNombre = nombre
         }
 
-        fun iniciar(edad: Int) {
+        fun iniciar(edad: Integer) {
             edadActual = edad
         }
 
         override fun toString(): String {
             return "La edad actual es $edadActual y " +
-                    "el nombre es $nombre"
+                    "el nombre es $nNombre"
 
         }
     }
-        class Persona2(edad: Int, nombre: String) {
+        class Persona2(edad: Integer, nombre: String) {
             var nEdad = edad
             var nNombre = nombre
             var nCedula: String? = null
-            var nCasado: Boolean? = null
+            var nCasado: Boolean? = true
 
-            constructor(edad2: Integer, nombre: String, //este constructor hace que cedula no sea obligatoriamente requerido
+            constructor(edad2: Integer, nombre2: String, //este constructor hace que cedula no sea obligatoriamente requerido
                         cedula: String) : this(edad2, nombre2) {
                 nCedula = cedula
             }
 
-            constructor(edad2: Integer, nombre: String, //este constructor hace que cedula no sea obligatoriamente requerido
-                        cedula2: String, casado: Boolean) : this(edad3, nombre3) {
+            constructor(edad2: Integer, nombre2: String, //este constructor hace que cedula no sea obligatoriamente requerido
+                        cedula2: String, casado1: Boolean) : this(edad2, nombre2) {
                 nCedula = cedula2
-                nCasado = casado
+                nCasado = casado1
             }
 
-            fun iniciar(edad: Int, nombre: String) {
-                edadActual = edad
-            }
             override fun toString(): String {
                 return "La edad actual es $nEdad y " +
                         "el nombre es $nNombre"
@@ -86,14 +88,15 @@ fun main(args: Array<String>) {
             }
         }
 
-        class Persona3(edad:Int nombre: String) {
+        class Persona3(edad:Integer, nombre: String) {
             lateinit var nEdad: Integer
             var nNombre = nombre
 
             init {//Escribir código después del constructor
                 iniciar(edad)
             }
-            fun iniciar(edad: Int, nombre: String) {//El constructor se inicia siempre primero, después el init
+
+            fun iniciar(edad: Integer) {//El constructor se inicia siempre primero, después el init
                 nEdad = edad
             }
 
@@ -106,13 +109,16 @@ fun main(args: Array<String>) {
         }
 
         open class Figura(nombre: String) {
-            val nNombre = nombre
+            var nNombre = nombre
 
-            fun iniciar(nombre: String) {//El constructor se inicia siempre primero, después el init
-                nombre=nombre
+             init {
+                 iniciar(nombre)
+             }
+            open fun iniciar(nombre: String) {//El constructor se inicia siempre primero, después el init
+                nNombre = nombre
             }
             override fun toString(): String {
-                return "La nombre es $nNombre"
+                return "La nombre de la figura es $nNombre"
 
             }
         }
@@ -121,12 +127,16 @@ fun main(args: Array<String>) {
             : Figura(nombre) { //se llama al primer constructor (herencia)
             var nValorLado = valorLado
 
-            fun iniciar(nombre: String) {//El constructor se inicia siempre primero, después el init
-                nombre=nombre
+            init {
+                iniciar(nombre)
+            }
+
+            override fun iniciar(nombre: String) {//El constructor se inicia siempre primero, después el init
+                nNombre=nombre
             }
             override fun toString(): String {
                 return "La valor del lado es $nValorLado y " +
-                        "el nombre es $nombre"
+                        "el nombre es $nNombre"
 
             }
         }
